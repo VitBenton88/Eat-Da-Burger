@@ -2,13 +2,13 @@ var connection = require("./connection.js");
 
 var orm = {
 	//select from all in burgers table
-  selectAll: function(table) {
-    var queryString = "SELECT * FROM ?";
-    connection.query(queryString, [table], function(err, result) {
+  selectAll: function(cb) {
+    var queryString = "SELECT * FROM burgers;";
+    connection.query(queryString, function(err, result) {
       if (err) {
         throw err;
       }
-      console.log(result);
+      cb(result);
     });
   },
   //insert new field into burgers table
