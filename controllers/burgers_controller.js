@@ -5,7 +5,7 @@ var router = express.Router();
 var burger = require("../models/burger.js");
 
 router.get("/", function(req, res) {
-  burger.all(function(data) {
+  burger.all("burgers", function(data) {
     var burgersObject = {
       burgers: data
     };
@@ -15,6 +15,7 @@ router.get("/", function(req, res) {
 });
 
 router.post("/", function(req, res) {
+  console.log(req.body);
   burger.create(
     req.body.name, function() {
     res.redirect("/");
@@ -24,12 +25,11 @@ router.post("/", function(req, res) {
 router.put("/:id", function(req, res) {
 
   var id = req.params.id;
-  var newName = req.body.newName;
   var devoured = req.body.devoured;
 
-  console.log("id: ", id);
+  console.log("Devouring ID: " + id);
 
-  burger.update(id, newName, devoured, function() {
+  burger.update(id, devoured, function() {
     res.redirect("/");
   });
 });

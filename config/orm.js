@@ -2,9 +2,10 @@ var connection = require("./connection.js");
 
 var orm = {
 	//select from all in burgers table
-  selectAll: function(cb) {
-    var queryString = "SELECT * FROM burgers;";
-    connection.query(queryString, function(err, result) {
+  selectAll: function(table, cb) {
+    var vals = [table];
+    var queryString = "SELECT * FROM ??;";
+    connection.query(queryString, vals, function(err, result) {
       if (err) {
         throw err;
       }
@@ -12,25 +13,34 @@ var orm = {
     });
   },
   //insert new field into burgers table
-  insertOne: function(table, name) {
-    var queryString = "INSERT INTO ? (burger_name) VALUES (?)";
+  insertOne: function(table, cols, name, cb) {
+    var queryString = "INSERT INTO ?? (??) VALUES (?)";
+    var vals = [table, cols, name];
 
     console.log(queryString);
 
-    connection.query(queryString, [table, name], function(err, result) {
-      console.log(result);
+    connection.query(queryString, vals, function(err, result) {
+      if (err) {
+        throw err;
+      }
+      cb(result);
     });
   },
   //update field into burgers table
-  updateOne: function(table, id, name, devoured) {
-    var queryString = "UPDATE ? SET burger_name = ?, devoured = ? WHERE ID = ?";
+  updateOne: function(table, cols, id, devouredVal, cb) {
+    var queryString = "UPDATE ?? SET ?? = ? WHERE ID = ?";
+
+    var vals = [table, cols, devouredVal, id];
 
     console.log(queryString);
 
-    connection.query(queryString, [table, name, devoured, id], function(err, result) {
-      console.log(result);
+    connection.query(queryString, vals, function(err, result) {
+      if (err) {
+        throw err;
+      }
+      cb(result);
     });
-  }
+  },
 };
 
 module.exports = orm;
